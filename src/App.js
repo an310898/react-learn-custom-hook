@@ -18,16 +18,18 @@ function App() {
     setTasks(arrData);
   };
 
-  const httpRequest = useHttp(
-    {
-      url: "https://react-http-1d49d-default-rtdb.asia-southeast1.firebasedatabase.app/tasks.json",
-    },
-    applyData
-  );
+  const httpRequest = useHttp();
+
+  const { isLoading, error, sendRequest: fetchTasks } = httpRequest;
 
   useEffect(() => {
-    httpRequest.sendRequest();
-  }, []);
+    fetchTasks(
+      {
+        url: "https://react-http-1d49d-default-rtdb.asia-southeast1.firebasedatabase.app/tasks.json",
+      },
+      applyData
+    );
+  }, [fetchTasks]);
 
   const taskAddHandler = task => {
     setTasks(prevTasks => prevTasks.concat(task));
@@ -38,9 +40,9 @@ function App() {
       <NewTask onAddTask={taskAddHandler} />
       <Tasks
         items={tasks}
-        loading={httpRequest.isLoading}
-        error={httpRequest.error}
-        onFetch={httpRequest.sendRequest}
+        loading={isLoading}
+        error={error}
+        onFetch={fetchTasks}
       />
     </React.Fragment>
   );
