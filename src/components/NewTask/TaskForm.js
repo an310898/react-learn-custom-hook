@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 
 import classes from "./TaskForm.module.css";
 
-const TaskForm = React.forwardRef((props, ref) => {
-  const taskInputRef = ref;
+const TaskForm = props => {
+  const taskInputRef = useRef();
 
   const submitHandler = event => {
     event.preventDefault();
@@ -17,10 +17,10 @@ const TaskForm = React.forwardRef((props, ref) => {
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
-      <input type="text" ref={ref} />
+      <input type="text" ref={taskInputRef} />
       <button>{props.loading ? "Sending..." : "Add Task"}</button>
     </form>
   );
-});
+};
 
 export default TaskForm;
